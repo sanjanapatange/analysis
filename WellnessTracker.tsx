@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
+  Card, CardContent, CardHeader, CardTitle
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 
 const categorizedHobbies: { [category: string]: string[] } = {
   "🎨 Creative & Artistic": ["Drawing", "Painting", "Singing", "Dancing"],
@@ -33,8 +32,10 @@ const WellnessTracker: React.FC = () => {
   const [result, setResult] = useState<any>(null);
 
   const toggleHobby = (hobby: string) => {
-    setHobbies((prev) =>
-      prev.includes(hobby) ? prev.filter(h => h !== hobby) : [...prev, hobby]
+    setHobbies(prev =>
+      prev.includes(hobby)
+        ? prev.filter(h => h !== hobby)
+        : [...prev, hobby]
     );
   };
 
@@ -55,42 +56,49 @@ const WellnessTracker: React.FC = () => {
   ] : [];
 
   return (
-    <div className="max-w-5xl mx-auto p-10 space-y-10 bg-gradient-to-br from-blue-50 to-white min-h-screen rounded-2xl shadow-2xl">
-      <Card className="shadow-xl border border-blue-300">
+    <div className="max-w-4xl mx-auto p-8 space-y-8 bg-gradient-to-br from-blue-50 to-white min-h-screen rounded-xl shadow-xl">
+      <Card className="shadow-lg border border-blue-200">
         <CardHeader>
-          <CardTitle className="text-3xl text-blue-800 font-bold text-center">🧠 Wellness Tracker</CardTitle>
+          <CardTitle className="text-2xl text-blue-700 font-bold">Wellness Tracker</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-8">
-          <div className="grid grid-cols-2 gap-8">
-            {[['Age', age, setAge], ['Sleep (hrs/day)', sleep, setSleep], ['Screen Time (hrs/day)', screenTime, setScreenTime], ['Social Interactions (per day)', socialInteraction, setSocialInteraction], ['Exercise (days/week)', exercise, setExercise]].map(
-              ([label, value, setter]: any, idx) => (
-                <div key={idx}>
-                  <Label className="text-base font-medium text-gray-700">{label}</Label>
-                  <Input
-                    type="number"
-                    value={value}
-                    onChange={(e) => setter(+e.target.value)}
-                    className="rounded-lg mt-1"
-                  />
-                </div>
-              )
-            )}
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <Label className="text-md">Age</Label>
+              <Input type="number" value={age} onChange={(e) => setAge(+e.target.value)} className="rounded-lg" />
+            </div>
+            <div>
+              <Label className="text-md">Sleep (hrs/day)</Label>
+              <Input type="number" value={sleep} onChange={(e) => setSleep(+e.target.value)} className="rounded-lg" />
+            </div>
+            <div>
+              <Label className="text-md">Screen Time (hrs/day)</Label>
+              <Input type="number" value={screenTime} onChange={(e) => setScreenTime(+e.target.value)} className="rounded-lg" />
+            </div>
+            <div>
+              <Label className="text-md">Social Interactions (per day)</Label>
+              <Input type="number" value={socialInteraction} onChange={(e) => setSocialInteraction(+e.target.value)} className="rounded-lg" />
+            </div>
+            <div>
+              <Label className="text-md">Exercise (days/week)</Label>
+              <Input type="number" value={exercise} onChange={(e) => setExercise(+e.target.value)} className="rounded-lg" />
+            </div>
           </div>
 
           <div className="space-y-6">
-            <Label className="text-xl font-semibold text-gray-800">🎯 Select Your Hobbies</Label>
+            <Label className="text-lg font-semibold">Select Your Hobbies</Label>
             {Object.entries(categorizedHobbies).map(([category, items]) => (
               <div key={category}>
-                <h4 className="font-semibold text-blue-600 mt-4 text-md">{category}</h4>
+                <h4 className="font-semibold text-blue-600 mt-4">{category}</h4>
                 <div className="flex flex-wrap gap-3 mt-2">
                   {items.map((hobby) => (
                     <button
                       key={hobby}
                       type="button"
                       onClick={() => toggleHobby(hobby)}
-                      className={`px-4 py-1.5 rounded-full text-sm transition font-medium shadow-md ${
+                      className={`px-4 py-1.5 rounded-full text-sm transition font-medium shadow-sm ${
                         hobbies.includes(hobby)
-                          ? 'bg-blue-600 text-white border border-blue-700'
+                          ? 'bg-blue-600 text-white'
                           : 'bg-blue-100 text-blue-800 hover:bg-blue-200'
                       }`}
                     >
@@ -102,57 +110,50 @@ const WellnessTracker: React.FC = () => {
             ))}
           </div>
 
-          <div className="pt-8">
-            <Button
-              onClick={analyze}
-              className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold text-lg py-3 rounded-lg shadow-lg transition"
-            >
-              🚀 Analyze My Wellness
+          <div className="pt-6">
+            <Button onClick={analyze} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold text-lg py-2 rounded-lg">
+              Analyze
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {result && (
-        <Card className="shadow-lg border border-blue-400">
+        <Card className="shadow-md border border-blue-300">
           <CardHeader>
-            <CardTitle className="text-xl text-blue-800 font-bold">📝 Analysis Result</CardTitle>
+            <CardTitle className="text-lg text-blue-700">Analysis Result</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p><strong>Wellness Level:</strong> {result.wellnessLevel}</p>
-                <p><strong>Depression Score:</strong> {result.depressionScore} ({result.depressionPercent}%)</p>
-                <p><strong>Loneliness Score:</strong> {result.lonelinessScore} ({result.lonelinessPercent}%)</p>
-              </div>
+          <CardContent className="space-y-4">
+            <p><strong>Wellness Level:</strong> {result.wellnessLevel}</p>
+            <p><strong>Depression Score:</strong> {result.depressionScore} ({result.depressionPercent}%)</p>
+            <p><strong>Loneliness Score:</strong> {result.lonelinessScore} ({result.lonelinessPercent}%)</p>
 
-              <div className="h-64">
-                <ResponsiveContainer>
-                  <PieChart>
-                    <Pie
-                      data={pieData}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={90}
-                      fill="#8884d8"
-                      label={({ name, value }) => `${name}: ${value}%`}
-                    >
-                      {pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-64 mt-4">
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    fill="#8884d8"
+                    label={({ name, value }) => `${name}: ${value}%`}
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
 
             <div>
-              <strong>🧭 Recommendations:</strong>
-              <ul className="list-disc list-inside mt-2 text-gray-700 space-y-1">
+              <strong>Recommendations:</strong>
+              <ul className="list-disc list-inside mt-2 text-gray-700">
                 {result.recommendations.map((rec: string, idx: number) => (
                   <li key={idx}>{rec}</li>
                 ))}
@@ -161,8 +162,8 @@ const WellnessTracker: React.FC = () => {
 
             {result.resources && result.resources.length > 0 && (
               <div>
-                <strong>📚 Helpful Resources:</strong>
-                <ul className="list-disc list-inside mt-2 text-blue-700 underline space-y-1">
+                <strong>Helpful Resources:</strong>
+                <ul className="list-disc list-inside mt-2 text-blue-700 underline">
                   {result.resources.map((link: string, idx: number) => (
                     <li key={idx}>
                       <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
