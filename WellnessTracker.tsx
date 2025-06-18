@@ -57,30 +57,30 @@ const WellnessTracker: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-8 space-y-8 bg-gradient-to-br from-blue-50 to-white min-h-screen rounded-xl shadow-xl">
-      <Card className="shadow-lg border border-blue-200">
+      <Card className="shadow-lg border border-blue-300">
         <CardHeader>
-          <CardTitle className="text-2xl text-blue-700 font-bold">Wellness Tracker</CardTitle>
+          <CardTitle className="text-2xl text-blue-700 font-bold">🌻🌿Wellness Tracker🌼🌞</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <Label className="text-md">Age</Label>
+              <Label className="text-md">Age 👴🏼🎂🕰️</Label>
               <Input type="number" value={age} onChange={(e) => setAge(+e.target.value)} className="rounded-lg" />
             </div>
             <div>
-              <Label className="text-md">Sleep (hrs/day)</Label>
+              <Label className="text-md">Sleep 😴 (hrs/day)</Label>
               <Input type="number" value={sleep} onChange={(e) => setSleep(+e.target.value)} className="rounded-lg" />
             </div>
             <div>
-              <Label className="text-md">Screen Time (hrs/day)</Label>
+              <Label className="text-md">Screen Time 💻📱(hrs/day)</Label>
               <Input type="number" value={screenTime} onChange={(e) => setScreenTime(+e.target.value)} className="rounded-lg" />
             </div>
             <div>
-              <Label className="text-md">Social Interactions (per day)</Label>
+              <Label className="text-md">Social Interactions 🤝(per day)</Label>
               <Input type="number" value={socialInteraction} onChange={(e) => setSocialInteraction(+e.target.value)} className="rounded-lg" />
             </div>
             <div>
-              <Label className="text-md">Exercise (days/week)</Label>
+              <Label className="text-md">Exercise 💪🏋️‍♀️🏃‍♂️(/day)</Label>
               <Input type="number" value={exercise} onChange={(e) => setExercise(+e.target.value)} className="rounded-lg" />
             </div>
           </div>
