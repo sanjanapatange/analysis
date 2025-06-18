@@ -15,74 +15,77 @@ def analyze():
     exercise = data.get("exercise", 0)
     hobbies = data.get("hobbies", [])
 
-    # Scores
-    depression_score = max(0, 10 - (sleep + exercise))
-    loneliness_score = max(0, 10 - social_interaction)
+    depression_score = 0
+    loneliness_score = 0
+
+    if sleep < 6:
+        depression_score += 1
+    if screen_time > 5:
+        depression_score += 1
+    if exercise < 2:
+        depression_score += 1
+
+    if social_interaction < 2:
+        loneliness_score += 2
+    elif social_interaction < 4:
+        loneliness_score += 1
+
+    if len(hobbies) == 0:
+        depression_score += 1
+        loneliness_score += 1
+
+    depression_percent = depression_score * 25
+    loneliness_percent = loneliness_score * 20
 
     total_score = depression_score + loneliness_score
-    depression_percent = round((depression_score / total_score) * 100, 1) if total_score else 0
-    loneliness_percent = round((loneliness_score / total_score) * 100, 1) if total_score else 0
-
-    # Determine wellness level
-    if total_score <= 4:
+    if total_score <= 2:
         wellness_level = "Excellent"
-    elif total_score <= 8:
-        wellness_level = "Good"
-    elif total_score <= 12:
-        wellness_level = "Average"
+    elif total_score <= 4:
+        wellness_level = "Moderate"
     else:
         wellness_level = "Needs Attention"
 
-    # Recommendations
     recommendations = []
-    if depression_score > 5:
-        recommendations.append("Follow a consistent sleep and exercise routine.")
-        recommendations.append("Start a relaxing hobby like yoga or painting.")
-    if loneliness_score > 5:
-        recommendations.append("Join local communities or online hobby groups.")
-        recommendations.append("Try volunteering or attending meetups.")
 
-    # Age-specific advice
-    age_based = []
-    if age < 20:
-        age_based.append("Engage with college groups or social clubs.")
-        age_based.append("Watch YouTube channels like 'KharmaMedic' or 'UnJaded Jade'.")
-    elif age < 30:
-        age_based.append("Explore co-working spaces or social events in your city.")
-        age_based.append("Try the 'Mindset Mentor' podcast for motivation.")
-    else:
-        age_based.append("Try apps like Calm and Headspace for mental well-being.")
-        age_based.append("Join fitness groups or online forums for adults.")
+    if sleep < 6:
+        recommendations.append("Try to maintain at least 7-8 hours of sleep per night.")
+    if screen_time > 5:
+        recommendations.append("Consider reducing screen time or taking regular digital breaks.")
+    if social_interaction < 2:
+        recommendations.append("Try joining local communities or hobby clubs to boost social engagement.")
+    if exercise < 2:
+        recommendations.append("Include some form of physical activity at least 3 days a week.")
 
-    # External resources
+    # ✅ Age-based recommendations
+    if age < 18:
+        recommendations.append("As a teenager, ensure balanced study and playtime. Talk to family or teachers about feelings.")
+    elif 18 <= age <= 25:
+        recommendations.append("Build a support network in college or early work life. Explore career counseling if overwhelmed.")
+    elif 26 <= age <= 40:
+        recommendations.append("Try balancing career stress with hobbies. Seek help if feeling burned out or disconnected.")
+    elif 41 <= age <= 60:
+        recommendations.append("Manage work-life balance and invest in relationships and self-care.")
+    elif age > 60:
+        recommendations.append("Stay connected with family or senior groups. Engage in hobbies and community volunteering.")
+
     resources = [
-    "https://www.meetup.com/",
-    "https://www.reddit.com/",
-    "https://www.facebook.com/groups/",
-    "https://www.hobbytribe.in/",
-    "https://www.ivolunteer.in/",
-    "https://www.unv.org/",
-    "https://www.giveindia.org/",
-    "https://www.volunteermatch.org/",
-    "https://www.wework.co.in/",
-    "https://www.indiqube.com/",
-    "https://www.91springboard.com/",
-    "https://www.eventshigh.com/",
-    "https://open.spotify.com/show/3rn5TcOlWD3axkz20YkZMc",
-    "https://podcasts.apple.com/us/podcast/the-mindset-mentor/id1033048640",
-    "https://www.youtube.com/c/RobDial"
-]
-
+        "https://www.meetup.com/",
+        "https://www.volunteermatch.org/",
+        "https://www.mindsetmentor.com/podcast",
+        "https://www.7cups.com/",
+        "https://www.talkspace.com/"
+    ]
 
     return jsonify({
-        "wellnessLevel": wellness_level,
         "depressionScore": depression_score,
         "lonelinessScore": loneliness_score,
         "depressionPercent": depression_percent,
         "lonelinessPercent": loneliness_percent,
-        "recommendations": recommendations + age_based,
+        "wellnessLevel": wellness_level,
+        "recommendations": recommendations,
         "resources": resources
     })
 
 if __name__ == "__main__":
     app.run(debug=True)
+
